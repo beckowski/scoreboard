@@ -1,0 +1,7 @@
+package com.sportradar.scoreboard;
+
+import com.sportradar.scoreboard.model.Match;
+
+public interface Scoreboard {
+    Match startNewMatch(String homeTeam, String awayTeam);
+}
