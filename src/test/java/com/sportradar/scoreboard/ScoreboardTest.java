@@ -47,5 +47,13 @@ public class ScoreboardTest {
         assertEquals(5, match.getAwayScore());
     }
 
+    @Test
+    void updateNonExistingMatchScore() {
+        scoreboard.updateScore("nonExisting", 0, 5);
+
+        assertThrows(MatchNotFoundException.class, () -> scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM));
+
+    }
+
 
 }
