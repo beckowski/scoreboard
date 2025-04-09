@@ -91,11 +91,11 @@ public class ScoreboardTest {
         var summary = scoreboard.getLiveMatchesSummary();
 
         // Verify the summary order
-        assertEquals(match4.toString(), summary.get(0));
-        assertEquals(match2.toString(), summary.get(1));
-        assertEquals(match1.toString(), summary.get(2));
-        assertEquals(match5.toString(), summary.get(3));
-        assertEquals(match3.toString(), summary.get(4));
+        assertEquals(summary.get(0), match4.toString());
+        assertEquals(summary.get(1), match2.toString());
+        assertEquals(summary.get(2), match1.toString());
+        assertEquals(summary.get(3), match5.toString());
+        assertEquals(summary.get(4), match3.toString());
     }
 
 }

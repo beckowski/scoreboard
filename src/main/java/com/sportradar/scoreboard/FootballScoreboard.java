@@ -4,14 +4,14 @@ import com.sportradar.scoreboard.exception.MatchAlreadyExistsException;
 import com.sportradar.scoreboard.exception.MatchNotFoundException;
 import com.sportradar.scoreboard.model.Match;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 
 public class FootballScoreboard implements Scoreboard {
 
-    private final HashMap<String, Match> liveMatches;
+    private final LinkedHashMap<String, Match> liveMatches;
 
     public FootballScoreboard() {
         this.liveMatches = new LinkedHashMap<>();
@@ -48,6 +48,16 @@ public class FootballScoreboard implements Scoreboard {
         liveMatches.remove(matchId);
     }
 
+    @Override
+    public List<String> getLiveMatchesSummary() {
+        var liveMatchesList = new ArrayList<>(liveMatches.entrySet());
+        sortMatchesList(liveMatchesList);
+
+        return liveMatchesList.stream()
+                .map(entry -> entry.getValue().toString())
+                .collect(Collectors.toList());
+    }
+
     private void validateMatchTeams(String homeTeam, String awayTeam) {
         for (var match : liveMatches.values()) {
             var matchHomeTeam = match.getHomeTeam();
@@ -58,6 +68,18 @@ public class FootballScoreboard implements Scoreboard {
                 throw new MatchAlreadyExistsException("Match with given team(s) already exists.");
             }
         }
+    }
+
+    private void sortMatchesList(List<Map.Entry<String, Match>> matchesList) {
+        matchesList.sort((entry1, entry2) -> {
+            int totalScore1 = entry1.getValue().getTotalScore();
+            int totalScore2 = entry2.getValue().getTotalScore();
+            if (totalScore1 != totalScore2) {
+                return Integer.compare(totalScore2, totalScore1);
+            }
+
+            return Integer.compare(matchesList.indexOf(entry2), matchesList.indexOf(entry1));
+        });
     }
 
 }
