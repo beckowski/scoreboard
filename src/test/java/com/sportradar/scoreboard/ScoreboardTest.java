@@ -1,6 +1,7 @@
 package com.sportradar.scoreboard;
 
 import com.sportradar.scoreboard.exception.MatchAlreadyExistsException;
+import com.sportradar.scoreboard.exception.MatchNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -49,10 +50,8 @@ public class ScoreboardTest {
 
     @Test
     void updateNonExistingMatchScore() {
-        scoreboard.updateScore("nonExisting", 0, 5);
-
-        assertThrows(MatchNotFoundException.class, () -> scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM));
-
+        assertThrows(MatchNotFoundException.class,
+                () -> scoreboard.updateScore("nonExisting", 0, 5));
     }
 
 

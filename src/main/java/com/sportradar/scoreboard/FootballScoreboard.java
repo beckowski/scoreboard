@@ -1,6 +1,7 @@
 package com.sportradar.scoreboard;
 
 import com.sportradar.scoreboard.exception.MatchAlreadyExistsException;
+import com.sportradar.scoreboard.exception.MatchNotFoundException;
 import com.sportradar.scoreboard.model.Match;
 
 import java.util.HashMap;
@@ -27,6 +28,10 @@ public class FootballScoreboard implements Scoreboard {
     @Override
     public void updateScore(String matchId, int homeScore, int awayScore) {
         var match = liveMatches.get(matchId);
+
+        if (isNull(match)) {
+            throw new MatchNotFoundException("Match with given id not found");
+        }
 
         match.setHomeScore(homeScore);
         match.setAwayScore(awayScore);
