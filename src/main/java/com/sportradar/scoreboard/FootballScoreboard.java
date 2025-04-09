@@ -6,6 +6,8 @@ import com.sportradar.scoreboard.model.Match;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import static java.util.Objects.isNull;
+
 public class FootballScoreboard implements Scoreboard {
 
     private final HashMap<String, Match> liveMatches;
@@ -20,6 +22,16 @@ public class FootballScoreboard implements Scoreboard {
         var match = new Match(homeTeam, awayTeam);
         liveMatches.put(match.getId(), match);
         return match;
+    }
+
+    @Override
+    public void updateScore(String matchId, int homeScore, int awayScore) {
+        var match = liveMatches.get(matchId);
+
+        match.setHomeScore(homeScore);
+        match.setAwayScore(awayScore);
+        liveMatches.put(matchId, match);
+
     }
 
     private void validateMatchTeams(String homeTeam, String awayTeam) {
