@@ -54,5 +54,13 @@ public class ScoreboardTest {
                 () -> scoreboard.updateScore("nonExisting", 0, 5));
     }
 
+    @Test
+    void updateMatchWithNegativeScore() {
+        var match = scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM);
+
+        assertThrows(MatchNotFoundException.class,
+                () -> scoreboard.updateScore(match.getId(), 0, -5));
+    }
+
 
 }
