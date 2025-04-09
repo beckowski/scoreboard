@@ -63,13 +63,12 @@ public class ScoreboardTest {
     }
 
     @Test
-    void testFinishMatch() {
+    void finishMatch() {
         var match = scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM);
 
         scoreboard.finishMatch(match.getId());
 
         assertDoesNotThrow(() -> scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM));
     }
-
 
 }

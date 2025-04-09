@@ -43,6 +43,11 @@ public class FootballScoreboard implements Scoreboard {
 
     }
 
+    @Override
+    public void finishMatch(String matchId) {
+        liveMatches.remove(matchId);
+    }
+
     private void validateMatchTeams(String homeTeam, String awayTeam) {
         for (var match : liveMatches.values()) {
             var matchHomeTeam = match.getHomeTeam();
