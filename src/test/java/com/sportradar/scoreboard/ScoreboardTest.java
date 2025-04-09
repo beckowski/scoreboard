@@ -58,7 +58,7 @@ public class ScoreboardTest {
     void updateMatchWithNegativeScore() {
         var match = scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM);
 
-        assertThrows(MatchNotFoundException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> scoreboard.updateScore(match.getId(), 0, -5));
     }
 

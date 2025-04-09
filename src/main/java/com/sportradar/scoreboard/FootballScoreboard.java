@@ -30,7 +30,11 @@ public class FootballScoreboard implements Scoreboard {
         var match = liveMatches.get(matchId);
 
         if (isNull(match)) {
-            throw new MatchNotFoundException("Match with given id not found");
+            throw new MatchNotFoundException("Match with given id not found.");
+        }
+
+        if (homeScore < 0 || awayScore < 0) {
+            throw new IllegalArgumentException("Score cannot be negative.");
         }
 
         match.setHomeScore(homeScore);
