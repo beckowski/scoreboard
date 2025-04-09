@@ -2,8 +2,7 @@ package com.sportradar.scoreboard;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ScoreboardTest {
 
@@ -13,7 +12,7 @@ public class ScoreboardTest {
     private FootballScoreboard scoreboard;
 
     @Test
-    void testStartNewMatch() {
+    void startNewMatch() {
         scoreboard = new FootballScoreboard();
         var match = scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM);
 
@@ -23,6 +22,13 @@ public class ScoreboardTest {
         assertEquals(0, match.getHomeScore());
         assertEquals(0, match.getAwayScore());
         assertEquals(0, match.getTotalScore());
+    }
+
+    @Test
+    void cannotStartNewMatchWithTeamAlreadyInMatch() {
+        scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM);
+
+        assertThrows(MatchAlreadyExistsException.class, () -> scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM));
     }
 
 }
