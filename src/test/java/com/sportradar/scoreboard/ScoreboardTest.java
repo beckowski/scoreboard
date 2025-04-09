@@ -71,4 +71,31 @@ public class ScoreboardTest {
         assertDoesNotThrow(() -> scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM));
     }
 
+    @Test
+    public void getLiveMatchesSummary() {
+        // Start the matches
+        var match1 = scoreboard.startNewMatch("Mexico", "Canada");
+        var match2 = scoreboard.startNewMatch("Spain", "Brazil");
+        var match3 = scoreboard.startNewMatch("Germany", "France");
+        var match4 = scoreboard.startNewMatch("Uruguay", "Italy");
+        var match5 = scoreboard.startNewMatch("Argentina", "Australia");
+
+        // Update scores
+        scoreboard.updateScore(match1.getId(), 0, 5);
+        scoreboard.updateScore(match2.getId(), 10, 2);
+        scoreboard.updateScore(match3.getId(), 2, 2);
+        scoreboard.updateScore(match4.getId(), 6, 6);
+        scoreboard.updateScore(match5.getId(), 3, 1);
+
+        // Get the live matches summary
+        var summary = scoreboard.getLiveMatchesSummary();
+
+        // Verify the summary order
+        assertEquals(match4.toString(), summary.get(0));
+        assertEquals(match2.toString(), summary.get(1));
+        assertEquals(match1.toString(), summary.get(2));
+        assertEquals(match5.toString(), summary.get(3));
+        assertEquals(match3.toString(), summary.get(4));
+    }
+
 }
