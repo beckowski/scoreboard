@@ -62,5 +62,14 @@ public class ScoreboardTest {
                 () -> scoreboard.updateScore(match.getId(), 0, -5));
     }
 
+    @Test
+    void testFinishMatch() {
+        var match = scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM);
+
+        scoreboard.finishMatch(match.getId());
+
+        assertDoesNotThrow(() -> scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM));
+    }
+
 
 }
