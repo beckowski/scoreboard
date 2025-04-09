@@ -1,0 +1,40 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+*.ipr
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# Logs
+*.log
+
+# Compiled class files
+*.class
+
+# Maven / Gradle
+target/
+build/
+
+# Temporary files
+*.swp
+*.swo
+*~
+
+# Java crash logs
+hs_err_pid*
+
+# JetBrains caches
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# IntelliJ module file backup
+*.iml.*
