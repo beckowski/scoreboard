@@ -2,12 +2,13 @@ package com.sportradar.scoreboard;
 
 import com.sportradar.scoreboard.exception.MatchAlreadyExistsException;
 import com.sportradar.scoreboard.exception.MatchNotFoundException;
+import com.sportradar.scoreboard.impl.FootballScoreboard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ScoreboardTest {
+public class FootballScoreboardTest {
 
     private static final String HOME_TEAM = "Mexico";
     private static final String AWAY_TEAM = "Canada";
@@ -20,7 +21,7 @@ public class ScoreboardTest {
     }
 
     @Test
-    void startNewMatch() {
+    void shouldStartNewMatchWhenTeamsAreAvailable() {
         var match = scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM);
 
         assertNotNull(match);
@@ -32,14 +33,15 @@ public class ScoreboardTest {
     }
 
     @Test
-    void cannotStartNewMatchWithTeamAlreadyInMatch() {
+    void shouldThrowWhenTeamIsAlreadyInMatch() {
         scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM);
 
-        assertThrows(MatchAlreadyExistsException.class, () -> scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM));
+        assertThrows(MatchAlreadyExistsException.class,
+                () -> scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM));
     }
 
     @Test
-    void updateMatchScore() {
+    void shouldUpdateScoreForOngoingMatch() {
         var match = scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM);
 
         scoreboard.updateScore(match.getId(), 0, 5);
@@ -49,13 +51,13 @@ public class ScoreboardTest {
     }
 
     @Test
-    void updateNonExistingMatchScore() {
+    void shouldThrowWhenUpdatingNonExistentMatch() {
         assertThrows(MatchNotFoundException.class,
                 () -> scoreboard.updateScore("nonExisting", 0, 5));
     }
 
     @Test
-    void updateMatchWithNegativeScore() {
+    void shouldThrowWhenUpdatingMatchWithNegativeScore() {
         var match = scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM);
 
         assertThrows(IllegalArgumentException.class,
@@ -63,7 +65,7 @@ public class ScoreboardTest {
     }
 
     @Test
-    void finishMatch() {
+    void shouldStartNewMatchWhenSameMatchIsFinished() {
         var match = scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM);
 
         scoreboard.finishMatch(match.getId());
@@ -72,7 +74,7 @@ public class ScoreboardTest {
     }
 
     @Test
-    public void getLiveMatchesSummary() {
+    public void shouldReturnLiveMatchesSummarySortedByScoreAndInsertOrder() {
         // Start the matches
         var match1 = scoreboard.startNewMatch("Mexico", "Canada");
         var match2 = scoreboard.startNewMatch("Spain", "Brazil");

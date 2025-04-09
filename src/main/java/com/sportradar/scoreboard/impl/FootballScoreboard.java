@@ -1,5 +1,6 @@
-package com.sportradar.scoreboard;
+package com.sportradar.scoreboard.impl;
 
+import com.sportradar.scoreboard.Scoreboard;
 import com.sportradar.scoreboard.exception.MatchAlreadyExistsException;
 import com.sportradar.scoreboard.exception.MatchNotFoundException;
 import com.sportradar.scoreboard.model.Match;

@@ -47,4 +47,8 @@ public class Match {
         return homeScore + awayScore;
     }
 
+    public String toString() {
+        return String.format("%s %d - %s %d", homeTeam, homeScore, awayTeam, awayScore);
+    }
+
 }
