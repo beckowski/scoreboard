@@ -1,5 +1,7 @@
 package com.sportradar.scoreboard;
 
+import com.sportradar.scoreboard.exception.MatchAlreadyExistsException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,9 +13,13 @@ public class ScoreboardTest {
 
     private FootballScoreboard scoreboard;
 
+    @BeforeEach
+    public void setUp() {
+        scoreboard = new FootballScoreboard();
+    }
+
     @Test
     void startNewMatch() {
-        scoreboard = new FootballScoreboard();
         var match = scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM);
 
         assertNotNull(match);
