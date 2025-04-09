@@ -37,4 +37,15 @@ public class ScoreboardTest {
         assertThrows(MatchAlreadyExistsException.class, () -> scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM));
     }
 
+    @Test
+    void updateMatchScore() {
+        var match = scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM);
+
+        scoreboard.updateScore(match.getId(), 0, 5);
+
+        assertEquals(0, match.getHomeScore());
+        assertEquals(5, match.getAwayScore());
+    }
+
+
 }
