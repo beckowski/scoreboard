@@ -33,11 +33,29 @@ public class FootballScoreboardTest {
     }
 
     @Test
-    void shouldThrowWhenTeamIsAlreadyInMatch() {
+    void shouldThrowWhenStaringNewMatchWithTeamAlreadyInMatch() {
         scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM);
 
         assertThrows(MatchAlreadyExistsException.class,
                 () -> scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM));
+    }
+
+    @Test
+    void shouldThrowWhenStartNewMatchWithInvalidTeam() {
+        assertThrows(IllegalArgumentException.class,
+                () -> scoreboard.startNewMatch(null, AWAY_TEAM));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> scoreboard.startNewMatch(HOME_TEAM, null));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> scoreboard.startNewMatch("", AWAY_TEAM));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> scoreboard.startNewMatch(HOME_TEAM, ""));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> scoreboard.startNewMatch(HOME_TEAM, HOME_TEAM));
     }
 
     @Test
