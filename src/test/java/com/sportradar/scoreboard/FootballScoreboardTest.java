@@ -25,11 +25,11 @@ public class FootballScoreboardTest {
         var match = scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM);
 
         assertNotNull(match);
-        assertEquals(HOME_TEAM, match.getHomeTeam());
-        assertEquals(AWAY_TEAM, match.getAwayTeam());
-        assertEquals(0, match.getHomeScore());
-        assertEquals(0, match.getAwayScore());
-        assertEquals(0, match.getTotalScore());
+        assertEquals(HOME_TEAM, match.homeTeam());
+        assertEquals(AWAY_TEAM, match.awayTeam());
+        assertEquals(0, match.homeScore());
+        assertEquals(0, match.awayScore());
+        assertEquals(0, match.totalScore());
     }
 
     @Test
@@ -62,16 +62,16 @@ public class FootballScoreboardTest {
     void shouldUpdateScoreForOngoingMatch() {
         var match = scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM);
 
-        scoreboard.updateScore(match.getId(), 0, 5);
+        var updatedMatch = scoreboard.updateScore(match.id(), 0, 5);
 
-        assertEquals(0, match.getHomeScore());
-        assertEquals(5, match.getAwayScore());
+        assertEquals(0, updatedMatch.homeScore());
+        assertEquals(5, updatedMatch.awayScore());
     }
 
     @Test
-    void shouldThrowWhenUpdatingNonExistentMatch() {
+    void shouldThrowWhenUpdatingNonExistingMatch() {
         assertThrows(MatchNotFoundException.class,
-                () -> scoreboard.updateScore("nonExisting", 0, 5));
+                () -> scoreboard.updateScore("wrongId", 0, 5));
     }
 
     @Test
@@ -79,14 +79,14 @@ public class FootballScoreboardTest {
         var match = scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM);
 
         assertThrows(IllegalArgumentException.class,
-                () -> scoreboard.updateScore(match.getId(), 0, -5));
+                () -> scoreboard.updateScore(match.id(), 0, -5));
     }
 
     @Test
     void shouldStartNewMatchWhenSameMatchIsFinished() {
         var match = scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM);
 
-        scoreboard.finishMatch(match.getId());
+        scoreboard.finishMatch(match.id());
 
         assertDoesNotThrow(() -> scoreboard.startNewMatch(HOME_TEAM, AWAY_TEAM));
     }
@@ -101,21 +101,21 @@ public class FootballScoreboardTest {
         var match5 = scoreboard.startNewMatch("Argentina", "Australia");
 
         // Update scores
-        scoreboard.updateScore(match1.getId(), 0, 5);
-        scoreboard.updateScore(match2.getId(), 10, 2);
-        scoreboard.updateScore(match3.getId(), 2, 2);
-        scoreboard.updateScore(match4.getId(), 6, 6);
-        scoreboard.updateScore(match5.getId(), 3, 1);
+        var updatedMatch1 = scoreboard.updateScore(match1.id(), 0, 5);
+        var updatedMatch2 = scoreboard.updateScore(match2.id(), 10, 2);
+        var updatedMatch3 = scoreboard.updateScore(match3.id(), 2, 2);
+        var updatedMatch4 = scoreboard.updateScore(match4.id(), 6, 6);
+        var updatedMatch5 = scoreboard.updateScore(match5.id(), 3, 1);
 
         // Get the live matches summary
         var summary = scoreboard.getLiveMatchesSummary();
 
         // Verify the summary order
-        assertEquals(summary.get(0), match4.toString());
-        assertEquals(summary.get(1), match2.toString());
-        assertEquals(summary.get(2), match1.toString());
-        assertEquals(summary.get(3), match5.toString());
-        assertEquals(summary.get(4), match3.toString());
+        assertEquals(updatedMatch4.toString(), summary.get(0));
+        assertEquals(updatedMatch2.toString(), summary.get(1));
+        assertEquals(updatedMatch1.toString(), summary.get(2));
+        assertEquals(updatedMatch5.toString(), summary.get(3));
+        assertEquals(updatedMatch3.toString(), summary.get(4));
     }
 
 }

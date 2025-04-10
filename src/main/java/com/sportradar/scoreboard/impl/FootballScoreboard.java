@@ -22,12 +22,12 @@ public class FootballScoreboard implements Scoreboard {
     public Match startNewMatch(String homeTeam, String awayTeam) {
         validateMatchTeams(homeTeam, awayTeam);
         var match = new Match(homeTeam, awayTeam);
-        liveMatches.put(match.getId(), match);
+        liveMatches.put(match.id(), match);
         return match;
     }
 
     @Override
-    public void updateScore(String matchId, int homeScore, int awayScore) {
+    public Match updateScore(String matchId, int homeScore, int awayScore) {
         var match = liveMatches.get(matchId);
 
         if (isNull(match)) {
@@ -38,9 +38,9 @@ public class FootballScoreboard implements Scoreboard {
             throw new IllegalArgumentException("Score cannot be negative.");
         }
 
-        match.setHomeScore(homeScore);
-        match.setAwayScore(awayScore);
-        liveMatches.put(matchId, match);
+        var updatedMatch = match.withScore(homeScore, awayScore);
+        liveMatches.put(matchId, updatedMatch);
+        return updatedMatch;
 
     }
 
@@ -61,8 +61,8 @@ public class FootballScoreboard implements Scoreboard {
 
     private void validateMatchTeams(String homeTeam, String awayTeam) {
         for (var match : liveMatches.values()) {
-            var matchHomeTeam = match.getHomeTeam();
-            var matchAwayTeam = match.getAwayTeam();
+            var matchHomeTeam = match.homeTeam();
+            var matchAwayTeam = match.awayTeam();
 
             if (matchHomeTeam.equals(homeTeam) || matchHomeTeam.equals(awayTeam) ||
                     matchAwayTeam.equals(homeTeam) || matchAwayTeam.equals(awayTeam)) {
@@ -73,8 +73,8 @@ public class FootballScoreboard implements Scoreboard {
 
     private void sortMatchesList(List<Map.Entry<String, Match>> matchesList) {
         matchesList.sort((entry1, entry2) -> {
-            int totalScore1 = entry1.getValue().getTotalScore();
-            int totalScore2 = entry2.getValue().getTotalScore();
+            int totalScore1 = entry1.getValue().totalScore();
+            int totalScore2 = entry2.getValue().totalScore();
             if (totalScore1 != totalScore2) {
                 return Integer.compare(totalScore2, totalScore1);
             }

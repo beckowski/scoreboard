@@ -2,53 +2,35 @@ package com.sportradar.scoreboard.model;
 
 import java.util.UUID;
 
-public class Match {
-    private final String id;
-    private final String homeTeam;
-    private final String awayTeam;
-    private int homeScore;
-    private int awayScore;
+public record Match(String id, String homeTeam, String awayTeam, int homeScore, int awayScore) {
+
+    public Match {
+        if (homeTeam == null || homeTeam.isBlank() || awayTeam == null || awayTeam.isBlank()) {
+            throw new IllegalArgumentException("Teams must not be null or blank.");
+        }
+        if (homeTeam.equals(awayTeam)) {
+            throw new IllegalArgumentException("Teams must be different.");
+        }
+        if (homeScore < 0 || awayScore < 0) {
+            throw new IllegalArgumentException("Scores must be non-negative.");
+        }
+    }
 
     public Match(String homeTeam, String awayTeam) {
-        this.id = UUID.randomUUID().toString();
-        this.homeTeam = homeTeam;
-        this.awayTeam = awayTeam;
+        this(UUID.randomUUID().toString(), homeTeam, awayTeam, 0, 0);
     }
 
-    public String getId() {
-        return id;
+    public Match withScore(int homeScore, int awayScore) {
+        return new Match(id, homeTeam, awayTeam, homeScore, awayScore);
     }
 
-    public String getHomeTeam() {
-        return homeTeam;
-    }
-
-    public String getAwayTeam() {
-        return awayTeam;
-    }
-
-    public int getHomeScore() {
-        return homeScore;
-    }
-
-    public void setHomeScore(int homeScore) {
-        this.homeScore = homeScore;
-    }
-
-    public int getAwayScore() {
-        return awayScore;
-    }
-
-    public void setAwayScore(int awayScore) {
-        this.awayScore = awayScore;
-    }
-
-    public int getTotalScore() {
+    public int totalScore() {
         return homeScore + awayScore;
     }
 
+    @Override
     public String toString() {
-        return String.format("%s %d - %s %d", homeTeam, homeScore, awayTeam, awayScore);
+        return homeTeam + " " + homeScore + " - " + awayScore + " " + awayTeam;
     }
 
 }
