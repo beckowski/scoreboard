@@ -4,18 +4,6 @@ import java.util.UUID;
 
 public record Match(String id, String homeTeam, String awayTeam, int homeScore, int awayScore) {
 
-    public Match {
-        if (homeTeam == null || homeTeam.isBlank() || awayTeam == null || awayTeam.isBlank()) {
-            throw new IllegalArgumentException("Teams must not be null or blank.");
-        }
-        if (homeTeam.equals(awayTeam)) {
-            throw new IllegalArgumentException("Teams must be different.");
-        }
-        if (homeScore < 0 || awayScore < 0) {
-            throw new IllegalArgumentException("Scores must be non-negative.");
-        }
-    }
-
     public Match(String homeTeam, String awayTeam) {
         this(UUID.randomUUID().toString(), homeTeam, awayTeam, 0, 0);
     }
